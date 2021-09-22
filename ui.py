@@ -1,10 +1,9 @@
-#!/usr/bin/env python2
-# ============================================================================
+#============================================================================
 """
 Detailed but concise file description here
 """
-# ============================================================================
-# System
+#============================================================================
+
 import sys
 
 try:
@@ -49,14 +48,14 @@ import utils
 from functools import partial
 
 #================================================================
-# create splash config editor window and read in configuration
+# Create splash config editor window and read in configuration
 config=configparser.ConfigParser()
 config.read('config.ini')
 
-OPEN_SPLASH    =  int(config['GLOBAL']['OPEN_SPLASH'   ])
+OPEN_SPLASH      =int(config['GLOBAL']['OPEN_SPLASH'])
 if OPEN_SPLASH:
-    splash = QtWidgets.QApplication(sys.argv)    
-    splash_window = QDialogSplash()
+    splash       =QtWidgets.QApplication(sys.argv)    
+    splash_window=QDialogSplash()
     splash_window.setFont(QFont("Verdana", 11))
     splash_window.exec_() 
 
@@ -74,41 +73,39 @@ DS_HANDLERS    =      config['DS'    ]['DS_HANDLERS'    ][1:-1].split(', ')
 DS_FILENAMES   =      config['DS'    ]['DS_FILENAMES'   ][1:-1].split(', ')
 DS_FILE_NUM    =  int(config['DS'    ]['DS_FILE_NUM'    ])
 
-T_RECORD    =  int(config['DS_arduino'    ]['T_RECORD'    ])
-T_OVERLAP    = float(config['DS_arduino'    ]['T_OVERLAP'    ])
+SAMPLE_RATE    =  int(config['DS'    ]['SAMPLE_RATE'    ])
 
-SAMPLE_RATE = int(config['DS']['SAMPLE_RATE'])
-NUM_BINS = int(config['ML']['NUM_BINS'])
+NUM_BINS       =  int(config['ML'    ]['NUM_BINS'       ])
 
 # Get data collection .py filename
-ds_filename = DS_FILENAMES[DS_FILE_NUM]
-ds_handler = DS_HANDLERS[DS_FILE_NUM]
+ds_filename    =DS_FILENAMES[DS_FILE_NUM]
+ds_handler     =DS_HANDLERS[DS_FILE_NUM]
 
-print("Config read")
+print("Config read done.")
 #================================================================
 
 # Check if OS supports signals
 does_support_signals=utils.does_support_signals()
 
 # For Qt
-SETUP_TIME = 7 # time for subprocesses to write their pid numbers to file
-window = None # hold onto window for interrupts
-FPS_COUNTER_RATE = 3  # sec
+SETUP_TIME      =7      # Time for subprocesses to write their pid numbers to file
+window          =None   # hold onto window for interrupts
+FPS_COUNTER_RATE=3      # sec
 
 # For UI style
-font_family = 'Verdana'
-fontsize_normal = 11
-fontsize_maximized = 14
+font_family       ='Verdana'
+fontsize_normal   =11
+fontsize_maximized=14
 
 
 def receive_signal(signum, stack):
-    """Kill ML and data handler if UI is interrupted from its terminal."""
+    # Kill ML and data handler if UI is interrupted from its terminal.
     print('Received UI signal')
     window.closeEvent(event=None)
     sys.exit()
 
 def write_to_config():
-    config.set("GLOBAL", "OPEN_SPLASH", str(int(OPEN_SPLASH)))
+    config.set("GLOBAL", "OPEN_SPLASH",     str(int(OPEN_SPLASH    )))
     config.set("GLOBAL", "ALGO_SUGGESTION", str(int(ALGO_SUGGESTION)))
     with open("config.ini", "w") as cf:
         config.write(cf)
@@ -117,39 +114,40 @@ def write_to_config():
 class T4Train(QtWidgets.QMainWindow):
     def __init__(self, ds_filename):    
         super(T4Train, self).__init__()
-        self.ds_filename = ds_filename
+        self.ds_filename=ds_filename
         uic.loadUi("ui_assets/ui_qtview.ui", self)
         self.show()
         
-        # delete any existing files from a previous session
+        # Delete any existing files from a previous session
         utils.delete_files_ending_in([".npy", ".txt", ".png", ".wav"])
 
 
-        # start data collection subprocess
+        # Start data source subprocess
         self.ds_subprocess=subprocess.Popen("python {}.py".format(ds_filename),
                                             shell=True)
 
-        # start machine learning subprocess
+        # Start machine learning subprocess
         self.ml_subprocess=subprocess.Popen("python ml.py",
                                             shell=True)
 
-        #set flag to clear fps buffer during setup
-        self.fps_tracker_ready = False
+        # Set flag to clear fps buffer during setup
+        self.fps_tracker_ready=False
 
 
-        # allow wait time for subprocesses to write their pid numbers to file
+        # Allow wait time for subprocesses to write their pid numbers to file
         time.sleep(SETUP_TIME)
 
         while True:
             try:
-                self.ml_pid = utils.read_pid_num("ml_pidnum.txt")
+                self.ml_pid=utils.read_pid_num("ml_pidnum.txt")
                 break
-            except:
+             except Exception as e:
+                print('ui.py getting ml PID:', e)
                 continue
 
         while True:
             try:
-                self.ds_pid = utils.read_pid_num("ds_pidnum.txt")
+                self.ds_pid=utils.read_pid_num("ds_pidnum.txt")
                 break
             except:
                 continue

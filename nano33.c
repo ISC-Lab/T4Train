@@ -89,7 +89,7 @@ void send_sample()
     */
     Serial.write(delimiter, sizeof(delimiter));
 
-    // Channel byte (one at the end of each channel's transmission)
+    // Channel number (one at the end of each channel's transmission)
     input[CAPTURE_SIZE]  =0;
     // Frame completion byte (only after all channels sent)
     input[CAPTURE_SIZE+1]=1;
