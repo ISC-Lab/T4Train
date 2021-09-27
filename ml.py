@@ -139,63 +139,67 @@ def init_machine_learning(algo='voting', mode='classifier'):
 
 
 def confusion_matrix():
+    global tmp_path
     clf_conf = init_machine_learning(algos[curr_algo_index], mode)
     print("init ml for confusion")
     # load training data
     try:
-        training_data = np.load('training_data.npy').astype('float')
-        training_labels = np.load('training_labels.npy')
+        training_data  =np.load(tmp_path+'training_data.npy').astype('float')
+        training_labels=np.load(tmp_path+'training_labels.npy')
     except Exception as e:
         print(e)
         return
-    X_train = []
-    Y_train = []
-    # featurizes the data
+    X_train=[]
+    Y_train=[]
+    
+    # Featurizes the data
     for i in range(0, np.shape(training_data)[0]):
         for j in range(0, np.shape(training_data)[1]):
-            tmptrain = training_data[i, j, :, :-2]
-            tmptrain = np.ravel(tmptrain)
-            tmptrain = utils.featurize(tmptrain, featurization_type=feat, numbins=NUM_BINS, sample_rate=SAMPLE_RATE)
+            tmptrain=training_data[i, j, :, :-2]
+            tmptrain=np.ravel(tmptrain)
+            tmptrain=utils.featurize(tmptrain, featurization_type=feat, numbins=NUM_BINS, sample_rate=SAMPLE_RATE)
             X_train.append(tmptrain)
             Y_train.append(training_labels[i])
 
-    X = np.array(X_train)[:, :, 0]
-    y = np.array(Y_train)
+    X =np.array(X_train)[:, :, 0]
+    y =np.array(Y_train)
 
-    le = preprocessing.LabelEncoder()
+    le=preprocessing.LabelEncoder()
     le.fit(y)
-    y = le.transform(y)
-    numclasses = len(le.classes_)
-    kf = KFold(n_splits=10, shuffle=True)
+    y =le.transform(y)
+    numclasses=len(le.classes_)
+    kf=KFold(n_splits=10, shuffle=True)
     kf.get_n_splits(X)
     acc=[]
     cnf=[]
     # test train split
     for train_index, test_index in kf.split(X):
-        X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = y[train_index], y[test_index]
-        clf_conf.fit(X_train,y_train.ravel()) # trains the model
-        tmpacc = clf_conf.score(X_test,y_test) # gets the accuracy of the classifier
-        y_pred = clf_conf.predict(X_test) # classification
-        cnf.append(sk_confusion(y_test,y_pred)) # creates confusion matrix
+        X_train, X_test=X[train_index], X[test_index]
+        y_train, y_test=y[train_index], y[test_index]
+        clf_conf.fit(X_train,y_train.ravel())   # Trains the model
+        tmpacc=clf_conf.score(X_test,y_test)    # Gets the accuracy of the classifier
+        y_pred=clf_conf.predict(X_test)         # Classification
+        cnf.append(sk_confusion(y_test,y_pred)) # Creates confusion matrix
         acc.append(tmpacc)
 
-    finalacc, finalcnf = [], []
+    finalacc, finalcnf=[], []
     finalacc.append(np.mean(acc))
-    totalcnf = np.sum(cnf,axis=0)
+    totalcnf=np.sum(cnf,axis=0)
 
-    newcnf = np.copy(totalcnf)
+    newcnf=np.copy(totalcnf)
     for i in range(0,numclasses):
-        newcnf[i,:] = newcnf[i,:]*100 / np.sum(totalcnf[i,:]) # converts to percentages
+        newcnf[i,:]=newcnf[i,:]*100 / np.sum(totalcnf[i,:]) # converts to percentages
     finalcnf.append(newcnf)
-    finalcnf = np.mean(finalcnf,axis=0)
-    np.savetxt('confusion_matrix.csv', finalcnf, delimiter=',')
+    finalcnf=np.mean(finalcnf,axis=0)
+    np.savetxt(tmp_path+'confusion_matrix.csv', finalcnf, delimiter=',')
 
 def feature_importances():
-    # load training data
+    global tmp_path
+
+    # Load training data
     try:
-        training_data = np.load('training_data.npy').astype(np.float)
-        training_labels = np.load('training_labels.npy')
+        training_data = np.load(tmp_path+'training_data.npy').astype(np.float)
+        training_labels = np.load(tmp_path+'training_labels.npy')
     except Exception as e:
         print(e)
         return
@@ -218,7 +222,7 @@ def feature_importances():
 
     model = init_machine_learning('rf', 'classifier') # initializes the machine learning model learning classifier to rf 
     model.fit(X_train, Y_train) # trains the model
-    np.savetxt('feature_importances.csv', model.feature_importances_, delimiter=',')
+    np.savetxt(tmp_path+'feature_importances.csv', model.feature_importances_, delimiter=',')
 
 
 def read_message():
@@ -231,12 +235,14 @@ def read_message():
     # tests to see if the file can be open  
 
     try:
-        f = open(tmp_path+"ml_cmd.txt", "r")
-        cmd = f.read()
+        f=open(tmp_path+"ml_cmd.txt", "r")
+        cmd=f.read()
         f.close()
     except Exception as e:
         return
-        
+
+    print("ml cmd:", cmd)        
+
     try:
         with open(tmp_path+"feat.txt", "r") as f:
             feat = utils.Featurization(f.read())

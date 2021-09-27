@@ -403,12 +403,24 @@ class T4Train(QtWidgets.QMainWindow):
         # I
         elif event.key()==QtCore.Qt.Key_I:
             self.on_feature_importance()
+            # DVS: this is insane, send feat import command
+            #      and send stop predict immediately
+            #      ml.py can never finish its calculation!
+            #      added sleep 5 sec to wait for ml.py to finish
+            #      but nmeed a much better solution
+            time.sleep(5)
         # M
         elif event.key()==QtCore.Qt.Key_M:
             self.on_ml_algo_toggle()
         # C
         elif event.key()==QtCore.Qt.Key_C:
             self.on_confusion_matrix()
+            # DVS: this is insane, send conf matrix command
+            #      and send stop predict immediately
+            #      ml.py can never finish calculate conf matrix!
+            #      added sleep 5 sec to wait for ml.py to finish
+            #      but nmeed a much better solution
+            time.sleep(5)
         # BackSpace
         elif event.key()==QtCore.Qt.Key_Backspace:
             self.on_delete_frame()
@@ -743,19 +755,19 @@ class T4Train(QtWidgets.QMainWindow):
 
     def update_fps(self, *args):
         """Update FPS label."""
-        if os.path.exists("fps_tracker") and self.fps_tracker_ready:
-            with open("fps_tracker", "r+") as fh:
-                self.num_frames+=len(fh.readline().strip())
-                fh.truncate(0)
-            fh.close()
-        else:
-            with open("fps_tracker", "r+") as fh:
-                fh.truncate(0)
-                self.fps_tracker_ready = True
-            fh.close()
-        fps=int(self.num_frames/FPS_COUNTER_RATE)
-        self.fps_label.setText("FPS: {}".format(fps))
-        self.num_frames=0
+        # if os.path.exists("fps_tracker") and self.fps_tracker_ready:
+        #     with open("fps_tracker", "r+") as fh:
+        #         self.num_frames+=len(fh.readline().strip())
+        #         fh.truncate(0)
+        #     fh.close()
+        # else:
+        #     with open("fps_tracker", "r+") as fh:
+        #         fh.truncate(0)
+        #         self.fps_tracker_ready = True
+        #     fh.close()
+        # fps=int(self.num_frames/FPS_COUNTER_RATE)
+        # self.fps_label.setText("FPS: {}".format(fps))
+        # self.num_frames=0
 
     def contextmenu_commands(self):
         """set up context menu"""
