@@ -86,6 +86,7 @@ def get_serial():
     if sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
         # /dev/ttyACM0 if real machine or /dev/ttyS0
         use_port='/dev/ttyACM0'
+        # use_port='/dev/ttyS4'
 
     # DVS: need to test on MAC
     # Mac

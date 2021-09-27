@@ -1,3 +1,17 @@
+/*
+  This example shows how to use a nRF52840 Timer and PPI to create square wave signal at a pin.
+  The signal is created by hardware and does not require any software after initialization.
+  Note:
+  - two samples are needed for a full wave
+  - to create 1 MHz the SAMPLES_PER_SECOND need to be 2M
+  - check pin diagram in Arduino store for nRF pins and ports
+  
+  The circuit:
+  - Arduino Nano 33 BLE/ BLE Sense board.
+
+  This example code is in the public domain.
+*/
+
 #include "mbed.h"
 
 #define SAMPLES_PER_SECOND  (16000000)
@@ -7,11 +21,14 @@
 #define PIN_GPIO_T4         (2)
 #define PORT_GPIO_T4        (1)
 
-#define PIN_PWM      D10   // Output PWM
-#define PIN_SYNC     D9    // For scope trigger
-#define PIN_IN       A0    // For analog read
 
-#define CAPTURE_SIZE 1500
+
+// -----
+#define PIN_PWM      D10   // Output PWM
+#define PIN_SYNC     D9  // For scope trigger
+#define PIN_IN       A0   // For analog read
+
+#define CAPTURE_SIZE 600
 #define BAUD_RATE    115200
 
 // Start, Stop frequency
@@ -24,7 +41,7 @@ uint16_t tmp_buf[5];
 
 // 
 int delimeter_length=4;
-uint8_t delimiter[] ={0xde, 0xad, 0xbe, 0xef};
+uint8_t delimiter[]={0xde, 0xad, 0xbe, 0xef};
 
 // Init PWM pin
 mbed::PwmOut pwmPin(digitalPinToPinName(PIN_PWM));
@@ -32,21 +49,17 @@ mbed::PwmOut pwmPin(digitalPinToPinName(PIN_PWM));
 int    dutycycle=50;
 double f        =0;
 
-
 void setup()
 {
-    // Pin mode
     pinMode(PIN_SYNC, OUTPUT);
     pinMode(PIN_IN,    INPUT);
 
-    // Baud rate
     Serial.begin(BAUD_RATE);
 
     // Set ADC resolution to 12-bit 
     analogReadResolution(12);
 
-    // Set PWM Freq
-    initTimer4(1e3);
+    initTimer4(f_end);
     initGPIOTE();
     initPPI();
 }
@@ -58,14 +71,14 @@ void loop()
 }
 
 
-void initTimer4(int f)
+void initTimer4(double f)
 {
     NRF_TIMER4->MODE = TIMER_MODE_MODE_Timer;
     NRF_TIMER4->BITMODE = TIMER_BITMODE_BITMODE_16Bit;
     NRF_TIMER4->SHORTS = TIMER_SHORTS_COMPARE0_CLEAR_Enabled << TIMER_SHORTS_COMPARE0_CLEAR_Pos;
     NRF_TIMER4->PRESCALER = 0;
     // NRF_TIMER4->CC[0] = 16000000 / SAMPLES_PER_SECOND; // Needs prescaler set to 0 (1:1) 16MHz clock
-    NRF_TIMER4->CC[0] = 16000000 /(f*2); // Needs prescaler set to 0 (1:1) 16MHz clock
+    NRF_TIMER4->CC[0] = (16000000 /(f*2)); // Needs prescaler set to 0 (1:1) 16MHz clock
     NRF_TIMER4->TASKS_START = 1;
 }
 
@@ -96,38 +109,24 @@ void collect_sample()
     // Set sync signal
     digitalWrite(PIN_SYNC, HIGH);
 
+
     // Loop through CAPTURE_SIZE samples and frequency sweep steps
     while(i<CAPTURE_SIZE)
     {
-        input[i]=analogRead(PIN_IN);
-        // if(i>1 && i<(CAPTURE_SIZE-1))
-        // {
-        //     do
-        //     {
-        //         input[i]+=analogRead(PIN_IN);
-        //     }
-        //     while((input[i]-input[i-1])>50);
-        // }
-        
-        while(input[i]< 900)input[i]=analogRead(PIN_IN);
-        // while(input[i]>3200)input[i]=analogRead(PIN_IN);
+        // Logarithmic, high to low, dense points at low  freq
+        double f=pow(10, (log10(f_end-f_start)*((i*1.0)/(CAPTURE_SIZE-1))))+f_start;
+        // Logarithmic, high to low, dense points at high freq
+        double f=pow(10, (log10(f_end-f_start)*(((CAPTURE_SIZE-i-1)*1.0)/(CAPTURE_SIZE-1))))+f_start;
+        // Linear,      high to low
+        double f=(f_end-f_start)*(((CAPTURE_SIZE-i-1)*1.0)/(CAPTURE_SIZE-1))+f_start;
 
-        // if(input[i]<100)
-        // {
-        //     Serial.println(i);
-        //     Serial.println(int(input[i]));    
-        // }
-
-        // Serial.println(i, input[i]);
-        
-        // Logarithmic
-        int f=pow(10, (log10(f_end-f_start)*((i*1.0)/(CAPTURE_SIZE-1))))+f_start;
-    
         initTimer4(f);
         initGPIOTE();
         initPPI();
-    
-        // delayMicroseconds(10);
+        delayMicroseconds(50);
+        
+        input[i]=analogRead(PIN_IN);
+        
         i++;
     }
 
