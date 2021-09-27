@@ -1,45 +1,45 @@
-#temporary, delete later
+# temporary, delete later
 import sys
 
-#System
+# System
 import pyaudio
 import configparser
 
-#Qt
-from PyQt5 import QtWidgets, QtCore, QtGui
+# Qt
+from PyQt5           import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import QCursor, QPalette, QFont, QValidator, QColor
+from PyQt5.QtCore    import *
+from PyQt5.QtGui     import QCursor, QPalette, QFont, QValidator, QColor
 
 #================================================================
-# read in configuration
+# Read in configuration
 config=configparser.ConfigParser()
 config.read('config.ini')
 
+OPEN_SPLASH    =  int(config['GLOBAL']['OPEN_SPLASH'    ])
 LABELS         =      config['GLOBAL']['LABELS'         ][1:-1].split(', ')
 INSTANCES      =  int(config['GLOBAL']['INSTANCES'      ])
 CHANNELS       =  int(config['GLOBAL']['CHANNELS'       ])
+FRAME_LENGTH   =  int(config['GLOBAL']['FRAME_LENGTH'   ])
+
 ALGOS          =      config['GLOBAL']['ALGOS'          ][1:-1].split(', ')
 CURR_ALGO_INDEX=  int(config['GLOBAL']['CURR_ALGO_INDEX'])
 ALGO_SUGGESTION=  int(config['GLOBAL']['ALGO_SUGGESTION'])
-FRAME_LENGTH   =  int(config['GLOBAL']['FRAME_LENGTH'   ])
-OPEN_SPLASH    =  int(config['GLOBAL']['OPEN_SPLASH'   ])
 
 DS_HANDLERS    =      config['DS'    ]['DS_HANDLERS'    ][1:-1].split(', ')
 DS_FILENAMES   =      config['DS'    ]['DS_FILENAMES'   ][1:-1].split(', ')
 DS_FILE_NUM    =  int(config['DS'    ]['DS_FILE_NUM'    ])
 
-T_RECORD    =  int(config['DS_arduino'    ]['T_RECORD'    ])
-T_OVERLAP    = float(config['DS_arduino'    ]['T_OVERLAP'    ])
+SAMPLE_RATE    =  int(config['DS'    ]['SAMPLE_RATE'    ])
 
-SAMPLE_RATE = int(config['DS']['SAMPLE_RATE'])
-NUM_BINS = int(config['ML']['NUM_BINS'])
+NUM_BINS       =  int(config['ML'    ]['NUM_BINS'       ])
 
 # Get data collection .py filename
-ds_filename = DS_FILENAMES[DS_FILE_NUM]
-ds_handler = DS_HANDLERS[DS_FILE_NUM]
+ds_filename    =DS_FILENAMES[DS_FILE_NUM]
+ds_handler     =DS_HANDLERS[DS_FILE_NUM]
 #================================================================
 
+# DVS: someone needs to add comment to this code
 class QDialogSplash(QDialog):
     def __init__(self, *args, **kwargs):
         super(QDialogSplash, self).__init__(*args, **kwargs)
@@ -134,25 +134,25 @@ class QDialogSplash(QDialog):
         self.ds_mic.currentTextChanged.connect(self.handle_mic_combo)
         self.ds.currentTextChanged.connect(self.handle_mic_combo)
 
-        self.record_box = QLineEdit(placeholderText=str(T_RECORD))
-        self.record_box.setValidator(self.onlyDouble)
-        self.record_box.setStyleSheet("color: white;  background-color: black")
-        self.record_label = QLabel("Record Time:")
-        self.overlap_box = QLineEdit(placeholderText=str(T_OVERLAP))
-        self.overlap_box.setValidator(self.onlyDouble)
-        self.overlap_box.setStyleSheet("color: white;  background-color: black")
-        self.overlap_label = QLabel("Overlap Time:")
-        scroll_layout.addWidget(self.record_label, 18, 0)
-        scroll_layout.addWidget(self.record_box, 18, 1)
-        scroll_layout.addWidget(self.overlap_label, 19, 0)
-        scroll_layout.addWidget(self.overlap_box, 19, 1)
+        # self.record_box = QLineEdit(placeholderText=str(T_RECORD))
+        # self.record_box.setValidator(self.onlyDouble)
+        # self.record_box.setStyleSheet("color: white;  background-color: black")
+        # self.record_label = QLabel("Record Time:")
+        # self.overlap_box = QLineEdit(placeholderText=str(T_OVERLAP))
+        # self.overlap_box.setValidator(self.onlyDouble)
+        # self.overlap_box.setStyleSheet("color: white;  background-color: black")
+        # self.overlap_label = QLabel("Overlap Time:")
+        # scroll_layout.addWidget(self.record_label, 18, 0)
+        # scroll_layout.addWidget(self.record_box, 18, 1)
+        # scroll_layout.addWidget(self.overlap_label, 19, 0)
+        # scroll_layout.addWidget(self.overlap_box, 19, 1)
 
         self.ds_mic.hide()
         self.ds_mic_label.hide()
-        self.record_label.hide()
-        self.record_box.hide()
-        self.overlap_label.hide()
-        self.overlap_box.hide()
+        # self.record_label.hide()
+        # self.record_box.hide()
+        # self.overlap_label.hide()
+        # self.overlap_box.hide()
         self.ds.currentTextChanged.connect(self.handle_ds_combo)
 
 
@@ -212,22 +212,22 @@ class QDialogSplash(QDialog):
         if self.ds.currentText() == "Microphone":
             self.ds_mic.show()
             self.ds_mic_label.show()
-            self.record_label.hide()
-            self.record_box.hide()
-            self.overlap_label.hide()
-            self.overlap_box.hide()
+            # self.record_label.hide()
+            # self.record_box.hide()
+            # self.overlap_label.hide()
+            # self.overlap_box.hide()
         elif self.ds.currentText() == "Arduino":
             self.ds_mic.hide()
             self.ds_mic_label.hide()
-            self.record_label.show()
-            self.record_box.show()
-            self.overlap_label.show()
-            self.overlap_box.show()
+            # self.record_label.show()
+            # self.record_box.show()
+            # self.overlap_label.show()
+            # self.overlap_box.show()
         else:
-            self.record_label.hide()
-            self.record_box.hide()
-            self.overlap_label.hide()
-            self.overlap_box.hide()
+            # self.record_label.hide()
+            # self.record_box.hide()
+            # self.overlap_label.hide()
+            # self.overlap_box.hide()
             self.ds_mic.hide()
             self.ds_mic_label.hide()
 
@@ -304,8 +304,7 @@ class QDialogSplash(QDialog):
 
         with open("config.ini", "w") as cf:
             config.write(cf)
-            cf.close()
-        #sys.exit(0)
+        
         self.close()
 
 
@@ -347,9 +346,9 @@ class QHLine(QFrame):
 
 
 
-#Some way to pull the splash screen back up from the main window
-#Some way to undo the “don’t ask me again toggle”
-#ML Algo Recommender (as a pop up)
+# Some way to pull the splash screen back up from the main window
+# Some way to undo the “don’t ask me again toggle”
+# ML Algo Recommender (as a pop up)
 #   Low # Classes, Low Instances → SVM Linear Kernel
 #   Low # Classes, High Instances → SVM RBF Kernel
 #   High # Classes, Low Amount of Instances → RF

@@ -6,28 +6,28 @@ New tag.
 
 Reusable in other py files.
 """
+import sys
 from sys import platform
 import numpy as np
 import os
 
+tmp_path="tmp/"
+if sys.platform.startswith('win'):
+    tmp_path=os.path.join("tmp", "")
 
 def does_support_signals():
-    return not platform == "win32"
-
+    return not platform=="win32"
 
 def delete_files_ending_in(file_types):
     """Deletes any files that have a extension in file_types (List)."""
-    dir = os.getcwd()
-    for item in os.listdir(dir):
-        if item == "requirements.txt":
+    for item in os.listdir(tmp_path):
+        if item=="requirements.txt":
             continue
 
         for file_type in file_types:
-
             if item.endswith(file_type):
-                os.remove(os.path.join(dir, item))
+                os.remove(os.path.join(tmp_path, item))
                 break
-
 
 def write_label(label, filename):
     """Sanitizes and writes label to filename."""
@@ -36,11 +36,9 @@ def write_label(label, filename):
         f.write(str(label))
         f.close()
 
-
 def write_cmd_message(filename, message):
     with open(filename, "w") as f:
       f.write(message)
-
 
 def read_pid_num(filename):
     ml_path = os.path.join(os.getcwd(), filename)
@@ -48,7 +46,6 @@ def read_pid_num(filename):
     pid = int(f.read())
     f.close()
     return pid
-
 
 def get_training_data_files_and_labels(labels_raw_text):
     """Gets all training data file names and its sanitized labels."""
@@ -60,15 +57,12 @@ def get_training_data_files_and_labels(labels_raw_text):
         sanitized_label = label.lower().strip().replace(" ", "_")
 
         # user can train without collected training data for all labels
-        if os.path.exists('training_data_{}.npy'.format(sanitized_label)):
-            training_data_files.append(
-                'training_data_{}.npy'.format(sanitized_label)
-            )
+        if os.path.exists(tmp_path+'training_data_{}.npy'.format(sanitized_label)):
+            training_data_files.append(tmp_path+'training_data_{}.npy'.format(sanitized_label))
 
         labels.append(sanitized_label)
 
     return [training_data_files, labels]
-
 
 def write_training_labels(training_data_files, labels, filename):
     """Write npy file of labels (input for ML)."""
@@ -91,7 +85,6 @@ def write_training_labels(training_data_files, labels, filename):
 
         # save ndarray of shape (rounds, 1) to npy file
         np.save(filename, training_labels)
-
 
 def compile_all_training_data(training_data_files, filename):
     """Compiles all training data files into one file (input for ML)."""

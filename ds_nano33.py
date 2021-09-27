@@ -127,11 +127,11 @@ def read_message():
     print("cmd:", cmd)
 
     # Check command
-    if cmd=='SPACEBAR':
+    if cmd.find('SPACEBAR')!=-1:
         global is_collecting_dataset
         is_collecting_dataset=True
         print("ds_nano33.py: Collecting training data...")
-    elif cmd=='BYE':
+    elif cmd.find('BYE')!=-1:
         global s
         print("ds_nano33.py: BYE!")
         s.close()
@@ -217,6 +217,7 @@ def read_once(s):
                     with open(tmp_path+"current_label.txt", "r") as f:
                         current_label=f.read().strip()
                     # Filename
+                    # cwd_path=os.getcwd()
                     training_data_file_name=tmp_path+'training_data_{}.npy'.format(current_label)
 
                     print('Saving Training Data to:', training_data_file_name)
@@ -265,9 +266,9 @@ if __name__ == '__main__':
     print('ds_nano33.py: Started')
 
     global tmp_path
-    tmp_path="/tmp/"
+    tmp_path="tmp/"
     if sys.platform.startswith('win'):
-        tmp_path=os.path.join("", "tmp", "")
+        tmp_path=os.path.join("tmp", "")
 
     # Write PID to file
     pidnum=os.getpid()
@@ -309,5 +310,3 @@ if __name__ == '__main__':
 
     s.close()
     sys.exit()
-
-    
