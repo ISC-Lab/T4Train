@@ -7,7 +7,6 @@
 - [Overview](#Overview)
 - [Data Handlers in T4Trian](#Different-Data-Handlers-in-T4Trian)
 - [Setup](#Setup)
-- [Dependencies](#Dependencies)
 - [Interface](#Interface)
 - [Running T4Train](#Running-T4Train)
   - [Configurations](#Configurations)
@@ -27,7 +26,6 @@
 - [Visualizations](#Visualizations)
 - [Data Sources / Devices](#Data-Sources)
 - [Machine Learning](#Machine-Learning)
-- [Publications](#Publications)
 - [Contribute](#Contribute)
 - [Troubleshooting](#Troubleshooting)
 
@@ -69,7 +67,7 @@ T4Train requires Python 3 and several dependencies listed in `requirements.txt`.
 Follow [setup-README.md](readme_assets/setup-README.md) for setup instructions
 for your computer.
 
-After you've installed your dependencies, go back to the [steps](#Running-T4Train)
+After you've installed your dependencies, go back to the [Running T4Train](#Running-T4Train)
 on how to get T4Train running.
 
 ## Interface
@@ -184,8 +182,8 @@ modified to support newly created data sources.
 
 ```
 [DS]
-ds_filenames = [ds_camera, ds_teensy, ds_arduino, ds_microphone, ds_microphonewav, ds_mobile_udp, ds_mobile_ble, ds_nano33]
-ds_file_num = 7
+ds_filenames=[ds_camera, ds_teensy, ds_arduino, ds_microphone, ds_microphonewav, ds_mobile_udp, ds_mobile_ble, ds_nano33]
+ds_file_num =7
 ```
 
 _In this case, `DS_FILE_NUM` sets the data source to `ds_microphone`_
@@ -352,8 +350,7 @@ or a voting classifier ('voting').
 
 You can also toggle between the algorithms with the application menu in the PyQt
 UI under the "ML Algorithm" tab, and you can instantly boot-up T4Train with a
-certain algorithm if you change the current algorithm index in the [_config.ini_
-file](#Configurations).
+certain algorithm if you change the current algorithm index in the [_config.ini_](#Configurations) file.
 
 **\*Note:** if you toggle to a different model after training, the current model
 will be erased. [Save](#S-for-Save) your model before you toggle if you want to
@@ -549,6 +546,6 @@ to go this route.
 
 ### Other Problems
 
-If you are having issues, please let us know.
+If you are having issues, please let us know by posting an issue on this repo.
 Feel free to email Yasha at [yiravan@umich.edu](mailto:yiravan@umich.edu) or
-Yang-Hsi t [devilsu@umich.edu](mailto:devilsu@umich.edu).
+Yang-Hsi at [devilsu@umich.edu](mailto:devilsu@umich.edu).
