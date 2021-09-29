@@ -9,7 +9,7 @@
 - [Setup](#Setup)
 - [Dependencies](#Dependencies)
 - [Interface](#Interface)
-- [Running T4Train](#Running_T4Train)
+- [Running T4Train](#Running-T4Train)
   - [Configurations](#Configurations)
   - [Labels](#Labels)
   - [Controls](#Controls)
@@ -69,7 +69,7 @@ T4Train requires Python 3 and several dependencies listed in `requirements.txt`.
 Follow [setup-README.md](readme_assets/setup-README.md) for setup instructions
 for your computer.
 
-After you've installed your dependencies, go back to the [steps](#Running_T4Train)
+After you've installed your dependencies, go back to the [steps](#Running-T4Train)
 on how to get T4Train running.
 
 ## Interface
@@ -506,7 +506,7 @@ requests, or bug fixes.
 
 If you see an error message in terminal about the program not being able to find
 `ml_pidnum.txt` or something like this, kill the program by pressing ctrl+c/cmd+c
-in terminal, then keep trying to [restart the UI](#Running_T4Train). This will
+in terminal, then keep trying to [restart the UI](#Running-T4Train). This will
 happen because sometimes the processes do not start fast enough.
 
 ### The UI has started but it does not plot anything.
@@ -526,7 +526,7 @@ Since Windows does not support signals, we use
 [timeloop](https://pypi.org/project/timeloop/) to run T4Train on Windows. As a
 result, sometimes T4Train gets stuck after you press **_t_** and "Training..."
 is displayed in the UI footer. Try killing the UI (either by closing the UI
-window or press ctrl+c/cmd+c) and [restarting the UI](#Running_T4Train).
+window or press ctrl+c/cmd+c) and [restarting the UI](#Running-T4Train).
 
 ### T4Train doesn't work! You lied to me! After hitting "T" it's not correctly classifying the object.
 
