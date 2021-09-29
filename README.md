@@ -13,7 +13,7 @@
   - [Configurations](#Configurations)
   - [Labels](#Labels)
   - [Controls](#Controls)
-    - [Up/Down for Label Selection](#Up/Down-for-Label-Selection)
+    - [Up/Down for Label Selection](#UpDown-for-Label-Selection)
 	- [Right Click Label to Edit](#Right-Click-Label-to-Edit)
     - [L for Load](#L-for-Load)
     - [Space for Collect](#Space-for-Collect)
@@ -214,16 +214,16 @@ or Teensy will not impact either.
 
 To use the interface, there are several different controls:
 
-- [Up/Down for Label Selection](#Labels)
-- [Right Click Label to Edit](#Right_Click_Label_to_Edit)
-- [L for Load](#L_for_Load)
-- [Space for Collect](#Space_for_Collect)
-- [Backspace for Delete](#Backspace_for_Delete)
-- [T for Train](#T_for_Train)
-- [S for Save](#S_for_Save)
-- [M for Machine Learning](#M_for_Machine_Learning)
-- [C for Confusion](#C_for_Confusion)
-- [I for Importance](#I_for_Importance)
+- [Up/Down for Label Selection](#UpDown-for-Label-Selection)
+- [Right Click Label to Edit](#Right-Click-Label-to-Edit)
+- [L for Load](#L-for-Load)
+- [Space for Collect](#Space-for-Collect)
+- [Backspace for Delete](#Backspace-for-Delete)
+- [T for Train](#T-for-Train)
+- [S for Save](#S-for-Save)
+- [M for Machine Learning](#M-for-Machine-Learning)
+- [C for Confusion](#C-for-Confusion)
+- [I for Importance](#I-for-Importance)
 - [Featurization](#Featurization)
 
 #### Up/Down for Label Selection
@@ -239,7 +239,7 @@ label. Similarly, _move_up_ will be called on _up_.
     def move_up(self):
         """Moves selected label to one above."""
 
-###  Right Click Label to Edit
+####  Right Click Label to Edit
 
 If you wish to rename, add, or delete labels from the main window, right click
 on any label. A context menu will appear that lets you delete or edit the name
@@ -356,7 +356,7 @@ certain algorithm if you change the current algorithm index in the [_config.ini_
 file](#Configurations).
 
 **\*Note:** if you toggle to a different model after training, the current model
-will be erased. [Save](#S_for_Save) your model before you toggle if you want to
+will be erased. [Save](#S-for-Save) your model before you toggle if you want to
 keep your model.\*
 
 #### C for Confusion
@@ -536,7 +536,7 @@ better with certain featurizations, such as Mobile and Microphone with FFT
 (Fast Fourier Transform).
 
 You can also try trying different algorithms by using our
-[algorithm toggle](#M_For_Machine_learning). Results may vary.
+[algorithm toggle](#M-For-Machine-learning). Results may vary.
 
 ### T4Train still doesn't work even after I tried everything!
 
