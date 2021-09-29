@@ -9,7 +9,7 @@
 - [Setup](#Setup)
 - [Dependencies](#Dependencies)
 - [Interface](#Interface)
-- [Running T4Train](#Running-T4Train)
+- [Running T4Train](#Running_T4Train)
   - [Configurations](#Configurations)
   - [Labels](#Labels)
   - [Controls](#Controls)
@@ -33,7 +33,7 @@
 
 ## Overview
 
-[T4Train](https://github.com/t4train/t4train) is an open-source,real-time,
+[T4Train](https://github.com/ISC-Lab/T4Train) is an open-source,real-time,
 cross-platform GUI that collects, visualizes, and classifies real-time data
 streams for interactive applications.
 - **_Easy-to-use_**: _ML-driven interactive applications prototyped and deployed rapidly_
@@ -148,7 +148,7 @@ _thumbs up_, your _LABELS_ field in your _config.ini_ should look like this:
 
 ```
 [GLOBAL]
-LABELS: [fist, open, thumbs up]
+LABELS=[fist, open, thumbs up]
 ```
 
 #### Channels
@@ -160,7 +160,7 @@ should look like this:
 
 ```
 [GLOBAL]
-CHANNELS: 3
+CHANNELS=3
 ```
 
 Microphone currently only supports 2 channels.
@@ -172,7 +172,7 @@ predicting, change the index of the algorithm in the _config.ini_ (zero indexed)
 
 ```
 [GLOBAL]
-CURR_ALGO_INDEX: 3
+CURR_ALGO_INDEX=3
 ```
 
 #### Data Source
@@ -184,8 +184,8 @@ modified to support newly created data sources.
 
 ```
 [DS]
-DS_FILENAMES   : [ds_camera, ds_teensy, ds_arduino, ds_microphone, ds_microphonewav, ds_mobile_udp, ds_mobile_ble]
-DS_FILE_NUM    : 3
+ds_filenames = [ds_camera, ds_teensy, ds_arduino, ds_microphone, ds_microphonewav, ds_mobile_udp, ds_mobile_ble, ds_nano33]
+ds_file_num = 7
 ```
 
 _In this case, `DS_FILE_NUM` sets the data source to `ds_microphone`_
@@ -197,13 +197,13 @@ in _config.ini_:
 
 ```
 [GLOBAL]
-FRAME_LENGTH: 3000
+FRAME_LENGTH=3000
 
 [DS]
-SAMPLE_RATE : 50
+SAMPLE_RATE=50
 
 [ML]
-NUM_BINS    : 750
+NUM_BINS=750
 ```
 
 The sampling rate, frame length, and number of bins are hardcoded into other data
@@ -237,7 +237,7 @@ label. Similarly, _move_up_ will be called on _up_.
     def move_down(self):
         """Moves selected label to one below."""
     def move_up(self):
-        """Moves selected label to one below."""
+        """Moves selected label to one above."""
 
 ###  Right Click Label to Edit
 
@@ -498,7 +498,7 @@ If you have questions about the specifics, email Yasha at
 Feel free to fork the repo and submit GitHub issues for changes, feature
 requests, or bug fixes.
 
-- Source Code: [github.com/t4train/t4train](github.com/t4train/t4train)
+- Source Code: [github.com/ISC-Lab/T4Train](github.com/ISC-Lab/T4Train)
 
 ## Troubleshooting
 
@@ -550,4 +550,5 @@ to go this route.
 ### Other Problems
 
 If you are having issues, please let us know.
-Feel free to email Yasha at [yiravan@umich.edu](mailto:yiravan@umich.edu).
+Feel free to email Yasha at [yiravan@umich.edu](mailto:yiravan@umich.edu) or
+Yang-Hsi t [devilsu@umich.edu](mailto:devilsu@umich.edu).
