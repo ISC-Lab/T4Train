@@ -9,7 +9,7 @@
 	- [Setting up a virtual environment](#Virtual_Env)
 		- [Windows](#Windows_Env)
 		- [MacOS & Linux](#Mac_Linux_Env)
-	- [Installing dependencies]((#Dependencies)
+	- [Installing dependencies](#Dependencies)
 - [Troubleshooting](#Troubleshooting)
 
 
