@@ -6,10 +6,15 @@ New tag.
 
 Reusable in other py files.
 """
+
+import os
 import sys
 from sys import platform
+
+import glob
+
 import numpy as np
-import os
+
 
 tmp_path="tmp/"
 if sys.platform.startswith('win'):
@@ -20,14 +25,12 @@ def does_support_signals():
 
 def delete_files_ending_in(file_types):
     """Deletes any files that have a extension in file_types (List)."""
-    for item in os.listdir(tmp_path):
-        if item=="requirements.txt":
-            continue
-
-        for file_type in file_types:
-            if item.endswith(file_type):
-                os.remove(os.path.join(tmp_path, item))
-                break
+    if os.path.exists(tmp_path):
+        files=glob.glob(tmp_path+'*')
+        for f in files:
+            os.remove(f)
+    else:
+        os.mkdir(tmp_path)
 
 def write_label(label, filename):
     """Sanitizes and writes label to filename."""
