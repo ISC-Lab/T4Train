@@ -182,8 +182,9 @@ modified to support newly created data sources.
 
 ```
 [DS]
+;             0,         1,         2,          3,             4,                5,             6,             7
 ds_filenames=[ds_camera, ds_teensy, ds_arduino, ds_microphone, ds_microphonewav, ds_mobile_udp, ds_mobile_ble, ds_nano33]
-ds_file_num =7
+ds_file_num =3
 ```
 
 _In this case, `DS_FILE_NUM` sets the data source to `ds_microphone`_
