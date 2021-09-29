@@ -79,4 +79,4 @@ sensor in the mobile app:
 
 ## Troubleshooting
 
-Further questions can be directed at foo@bar.edu.
+Further questions can be directed at _oalejel@umich.edu
