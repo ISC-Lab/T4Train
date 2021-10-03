@@ -18,6 +18,5 @@ os.system("python -m pip install --upgrade pip")
 
 # installing pipwin to install pyaudio for Windows
 if platform == "win32":
-
     os.system("python -m pip install pipwin")
     os.system("pipwin install pyaudio")

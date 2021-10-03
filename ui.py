@@ -317,7 +317,7 @@ class T4Train(QtWidgets.QMainWindow):
         global tmp_path
         """Called on exit."""
         # Delete files from current session, in folder "tmp"
-        utils.delete_files_ending_in([".npy", ".txt", ".png", ".wav"])
+        # utils.delete_files_ending_in([".npy", ".txt", ".png", ".wav"])
 
         # Close data collection .py
         try:
@@ -362,10 +362,22 @@ class T4Train(QtWidgets.QMainWindow):
         elif event.key()==QtCore.Qt.Key_L:
             self.stepsbar.set_state(0, 1)
             self.on_load()
+            # DVS: this is insane, send conf matrix command
+            #      and send stop predict immediately
+            #      ml.py can never finish calculate conf matrix!
+            #      added sleep 5 sec to wait for ml.py to finish
+            #      but nmeed a much better solution
+            time.sleep(5)
         # S
         elif event.key()==QtCore.Qt.Key_S:
             self.stepsbar.set_state(2, 1)
             self.on_save()
+            # DVS: this is insane, send conf matrix command
+            #      and send stop predict immediately
+            #      ml.py can never finish calculate conf matrix!
+            #      added sleep 5 sec to wait for ml.py to finish
+            #      but nmeed a much better solution
+            time.sleep(5)
         # T
         elif event.key()==QtCore.Qt.Key_T:
             suggested_algo=ALGOS[CURR_ALGO_INDEX]
@@ -596,6 +608,8 @@ class T4Train(QtWidgets.QMainWindow):
         self.footer.setText("Done Collecting Frames.")
 
     def on_load(self):
+        global tmp_path
+
         """L for Load."""
         global INSTANCES
         if not os.path.exists("saved_files/import/"):
@@ -604,11 +618,11 @@ class T4Train(QtWidgets.QMainWindow):
         else:
             # Copy files into current directory
             for item in os.listdir("saved_files/import/"):
-                copy("saved_files/import/%s" % item, os.getcwd())
+                copy("saved_files/import/%s" % item, tmp_path)
             self.footer.setText("Copied saved_files/import/ to current dir")
 
             # Get all training data files
-            training_data_files, labels = utils.get_training_data_files_and_labels(self.labels.label_raw_text)
+            training_data_files, labels=utils.get_training_data_files_and_labels(self.labels.label_raw_text)
 
             # Update frame counts based on loaded files
             for i in range(len(training_data_files)):
@@ -637,9 +651,10 @@ class T4Train(QtWidgets.QMainWindow):
         # if does_support_signals:
         os.kill(self.ml_pid, signal.SIGINT)
 
-        for item in os.listdir(os.getcwd()):
+        # for item in os.listdir(os.path.join(os.getcwd(), tmp_path)):
+        for item in os.listdir(tmp_path):
             if item.startswith('training_data_') and item.endswith('.npy'):
-                copy(item, "saved_files/{}/".format(curr_time))
+                copy(tmp_path+item, "saved_files/{}/".format(curr_time))
 
         self.footer.setText("Saved files to saved_files/{}/".format(curr_time))
 
@@ -1138,7 +1153,7 @@ if __name__=="__main__":
     global font_family, fontsize_normal, fontsize_maximized
 
     # For Qt
-    SETUP_TIME        =7      # Time for subprocesses to write their pid numbers to file
+    SETUP_TIME        =5      # Time for subprocesses to write their pid numbers to file
     window            =None   # hold onto window for interrupts
     FPS_COUNTER_RATE  =3      # sec
 

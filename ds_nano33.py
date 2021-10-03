@@ -305,7 +305,7 @@ if __name__ == '__main__':
     # Setup crtl+c catch function
     signal.signal(signal.SIGINT, receive_interrupt)
 
-    print("ds_nano33.py: Start receive data for loop")
+    print("ds_nano33.py: Start receive data forloop")
     while True:
         read_once(s)
 
