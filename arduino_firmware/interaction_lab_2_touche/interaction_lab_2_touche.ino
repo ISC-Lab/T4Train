@@ -25,7 +25,7 @@
 
 // -----
 #define PIN_PWM      D10   // Output PWM
-#define PIN_SYNC     D9  // For scope trigger
+#define PIN_SYNC     D9   // For scope trigger
 #define PIN_IN       A0   // For analog read
 
 #define CAPTURE_SIZE 600
@@ -73,22 +73,21 @@ void loop()
 
 void initTimer4(double f)
 {
-    NRF_TIMER4->MODE = TIMER_MODE_MODE_Timer;
-    NRF_TIMER4->BITMODE = TIMER_BITMODE_BITMODE_16Bit;
-    NRF_TIMER4->SHORTS = TIMER_SHORTS_COMPARE0_CLEAR_Enabled << TIMER_SHORTS_COMPARE0_CLEAR_Pos;
-    NRF_TIMER4->PRESCALER = 0;
-    // NRF_TIMER4->CC[0] = 16000000 / SAMPLES_PER_SECOND; // Needs prescaler set to 0 (1:1) 16MHz clock
-    NRF_TIMER4->CC[0] = (16000000 /(f*2)); // Needs prescaler set to 0 (1:1) 16MHz clock
-    NRF_TIMER4->TASKS_START = 1;
+    NRF_TIMER4->MODE       =TIMER_MODE_MODE_Timer;
+    NRF_TIMER4->BITMODE    =TIMER_BITMODE_BITMODE_16Bit;
+    NRF_TIMER4->SHORTS     =TIMER_SHORTS_COMPARE0_CLEAR_Enabled<<TIMER_SHORTS_COMPARE0_CLEAR_Pos;
+    NRF_TIMER4->PRESCALER  =0;
+    NRF_TIMER4->CC[0]      =(16000000/(f*2)); // Needs prescaler set to 0 (1:1) 16MHz clock
+    NRF_TIMER4->TASKS_START=1;
 }
 
 void initGPIOTE()
 {
-    NRF_GPIOTE->CONFIG[0] = ( GPIOTE_CONFIG_MODE_Task       << GPIOTE_CONFIG_MODE_Pos ) |
-                            ( GPIOTE_CONFIG_OUTINIT_Low     << GPIOTE_CONFIG_OUTINIT_Pos ) |
-                            ( GPIOTE_CONFIG_POLARITY_Toggle << GPIOTE_CONFIG_POLARITY_Pos ) |
-                            ( PORT_GPIO_T4                  << GPIOTE_CONFIG_PORT_Pos ) |
-                            ( PIN_GPIO_T4                   << GPIOTE_CONFIG_PSEL_Pos );
+    NRF_GPIOTE->CONFIG[0]=(GPIOTE_CONFIG_MODE_Task      <<GPIOTE_CONFIG_MODE_Pos    ) |
+                          (GPIOTE_CONFIG_OUTINIT_Low    <<GPIOTE_CONFIG_OUTINIT_Pos ) |
+                          (GPIOTE_CONFIG_POLARITY_Toggle<<GPIOTE_CONFIG_POLARITY_Pos) |
+                          (PORT_GPIO_T4                 <<GPIOTE_CONFIG_PORT_Pos    ) |
+                          (PIN_GPIO_T4                  <<GPIOTE_CONFIG_PSEL_Pos    );
 }
 
 void initPPI()
@@ -115,10 +114,12 @@ void collect_sample()
     {
         // Logarithmic, high to low, dense points at low  freq
         double f=pow(10, (log10(f_end-f_start)*((i*1.0)/(CAPTURE_SIZE-1))))+f_start;
+
         // Logarithmic, high to low, dense points at high freq
-        double f=pow(10, (log10(f_end-f_start)*(((CAPTURE_SIZE-i-1)*1.0)/(CAPTURE_SIZE-1))))+f_start;
+        // double f=pow(10, (log10(f_end-f_start)*(((CAPTURE_SIZE-i-1)*1.0)/(CAPTURE_SIZE-1))))+f_start;
+        
         // Linear,      high to low
-        double f=(f_end-f_start)*(((CAPTURE_SIZE-i-1)*1.0)/(CAPTURE_SIZE-1))+f_start;
+        // double f=(f_end-f_start)*(((CAPTURE_SIZE-i-1)*1.0)/(CAPTURE_SIZE-1))+f_start;
 
         initTimer4(f);
         initGPIOTE();
