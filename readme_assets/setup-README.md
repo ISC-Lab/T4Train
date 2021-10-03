@@ -137,7 +137,6 @@ Navigate to the T4Train directory and activate the virtual environment in your
 terminal. Run the following commands in terminal:
 
 	$ python setup.py
-	$ pip install -r requirements.txt
 
 All of the T4Train dependencies should now be installed.
 
