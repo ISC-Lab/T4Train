@@ -11,4 +11,4 @@ scikit-learn==0.23.2
 psutil==5.7.2
 pyqtgraph==0.11.0
 Pillow==7.2.0
-pyaudio==0.2.11
+timeloop==1.0.2

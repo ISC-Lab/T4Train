@@ -36,12 +36,12 @@ import numpy as np
 
 # serial
 import serial
-
-# for windows
-from timeloop import Timeloop
+import serial.tools.list_ports
 
 # Self-define functions
 import utils
+
+from timeloop import Timeloop
 
 
 def serial_ports():
@@ -55,7 +55,12 @@ def serial_ports():
     # Windows
     # DVS: need to sub this with gtabbing actual port in windows
     if sys.platform.startswith('win'):
-        ports=['COM%s' % (i+1) for i in range(6)]
+        # ports=['COM%s' % (i+1) for i in range(6)]
+        ports=[]
+        exist_ports=serial.tools.list_ports.comports()
+        for port, desc, hwid in sorted(exist_ports):
+            # print("{}: {} [{}]".format(port, desc, hwid))
+            ports.append(port)
     # Linux
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
         # this excludes your current terminal "/dev/tty"
@@ -80,7 +85,14 @@ def get_serial():
     use_port=None
     # Windows
     if sys.platform.startswith('win'):
-        use_port='COM5'
+        ports=[]
+        exist_ports=serial.tools.list_ports.comports()
+        for port, desc, hwid in sorted(exist_ports):
+            # print("{}: {} [{}]".format(port, desc, hwid))
+            ports.append(port)
+
+        # Not a great idea tbh
+        use_port=ports[0]
 
     # ubuntu or VM on Windows
     if sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
@@ -223,12 +235,13 @@ def read_once(s):
 
                     print('Saving Training Data to:', training_data_file_name)
                     # DVS: need to check this
-                    if os.path.exists(training_data_file_name):
-                        existing_training_data=np.load(training_data_file_name)
-                        np.save(training_data_file_name,
+                    # if os.path.exists(training_data_file_name):
+                    if os.path.exists(os.path.join(os.getcwd(), training_data_file_name)):
+                        existing_training_data=np.load(os.path.join(os.getcwd(), training_data_file_name))
+                        np.save(os.path.join(os.getcwd(), training_data_file_name),
                                 np.append(existing_training_data, training_data, axis=0))
                     else:
-                        np.save(training_data_file_name, training_data)
+                        np.save(os.path.join(os.getcwd(), training_data_file_name), training_data)
 
                     training_data=[[]]
                     is_collecting_dataset=False
@@ -270,11 +283,14 @@ if __name__ == '__main__':
     tmp_path="tmp/"
     if sys.platform.startswith('win'):
         tmp_path=os.path.join("tmp", "")
+    # tmp_path=""
 
     # Write PID to file
     pidnum=os.getpid()
     with open(tmp_path+"ds_pidnum.txt", "w") as f:
         f.write(str(pidnum))
+
+    print("pid:", pidnum)
 
     # Clear command txt
     with open(tmp_path+"ds_cmd.txt", "w") as f:
@@ -302,12 +318,45 @@ if __name__ == '__main__':
     # Get a serial port
     s=get_serial()
 
-    # Setup crtl+c catch function
-    signal.signal(signal.SIGINT, receive_interrupt)
+    # sys.exit()
+
+    # # Setup crtl+c catch function
+    # signal.signal(signal.SIGINT, receive_interrupt)
+    # # signal.signal(signal.SIGBREAK, receive_interrupt)
+    # # signal.signal(signal.CTRL_C_EVENT, receive_interrupt)
+    
+
+    # print("ds_nano33.py: Start receive data forloop")
+    # while True:
+    #     read_once(s)
+
+    # s.close()
+    # sys.exit()
+
+
+
+
 
     print("ds_nano33.py: Start receive data forloop")
-    while True:
-        read_once(s)
+    if utils.does_support_signals():
+        signal.signal(signal.SIGINT, receive_interrupt)
+
+        while True:
+            read_once(s)
+    else:
+        timeloop_ds=Timeloop()
+        
+        # add timeloop job to handle commands
+        @timeloop_ds.job(interval=timedelta(seconds=0.3))
+        def read_message_wrapper():
+            read_message()
+
+        # add timeloop job to collect and write microphone data
+        @timeloop_ds.job(interval=timedelta(seconds=0.0000001))
+        def read_once_wrapper():
+            read_once(s)
+
+        timeloop_ds.start(block=True)
 
     s.close()
     sys.exit()

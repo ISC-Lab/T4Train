@@ -37,6 +37,8 @@ from sklearn.model_selection import KFold
 # Self-define functions
 import utils
 
+from timeloop import Timeloop
+
 
 def save_model(curr_time):
     global model
@@ -327,6 +329,7 @@ if __name__=="__main__":
     tmp_path="tmp/"
     if sys.platform.startswith('win'):
         tmp_path=os.path.join("tmp", "")
+    # tmp_path=""
 
     # Write PID to file
     pidnum=os.getpid()
@@ -385,11 +388,35 @@ if __name__=="__main__":
         feat=utils.Featurization.Raw
     feat_from_last_train=feat
 
-    # Setup crtl+c catch function
-    signal.signal(signal.SIGINT, receive_interrupt)
+    # # Setup crtl+c catch function
+    # signal.signal(signal.SIGINT, receive_interrupt)
+
+    # print("ml.py: Start ml forloop")
+    # while True:
+    #     ml_main()
+
+    # sys.exit()
+
 
     print("ml.py: Start ml forloop")
-    while True:
-        ml_main()
+    if utils.does_support_signals():
+        signal.signal(signal.SIGINT, receive_interrupt)
+
+        while True:
+            ml_main()
+    else:
+        timeloop_ml=Timeloop()
+        
+        # adds timeloop job for checking for ml commans
+        @timeloop_ml.job(interval=timedelta(seconds=0.3))
+        def read_message_wrapper():
+            read_message()
+
+        # adds timeloop job for training and predicting
+        @timeloop_ml.job(interval=timedelta(seconds=0.2))
+        def ml_main_wrapper():
+            ml_main()
+
+        timeloop_ml.start(block=True)
 
     sys.exit()

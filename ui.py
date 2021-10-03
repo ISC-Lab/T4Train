@@ -39,6 +39,7 @@ from PIL import Image
 # Self-define functions
 import utils
 
+import timeloop
 
 try:
     import pyaudio
@@ -314,6 +315,7 @@ class T4Train(QtWidgets.QMainWindow):
                                'Data will be lost. Change NUM_BINS in config.ini.', 'Warning')
 
     def closeEvent(self, event):
+        global does_support_signals
         global tmp_path
         """Called on exit."""
         # Delete files from current session, in folder "tmp"
@@ -323,8 +325,8 @@ class T4Train(QtWidgets.QMainWindow):
         try:
             utils.write_cmd_message(tmp_path+"ds_cmd.txt", "BYE")
 
-            # If does_support_signals:
-            os.kill(self.ds_pid, signal.SIGINT)
+            if does_support_signals:
+                os.kill(self.ds_pid, signal.SIGINT)
         except Exception as e:
             print(e)
 
@@ -332,8 +334,8 @@ class T4Train(QtWidgets.QMainWindow):
         try:
             utils.write_cmd_message(tmp_path+"ml_cmd.txt", "BYE")
 
-            # If does_support_signals:
-            os.kill(self.ml_pid, signal.SIGINT)
+            if does_support_signals:
+                os.kill(self.ml_pid, signal.SIGINT)
         except Exception as e:
             print(e)
 
@@ -459,12 +461,13 @@ class T4Train(QtWidgets.QMainWindow):
             self.stop_predicting()
 
     def stop_predicting(self):
+        global does_support_signals
         global tmp_path
         """Stop predicting."""
         self.is_predicting=False
         utils.write_cmd_message(tmp_path+"ml_cmd.txt", "STOP PREDICTING")
-        # If does_support_signals:
-        os.kill(self.ml_pid, signal.SIGINT)
+        if does_support_signals:
+            os.kill(self.ml_pid, signal.SIGINT)
 
     def update_prediction(self, *args):
         global tmp_path
@@ -564,6 +567,7 @@ class T4Train(QtWidgets.QMainWindow):
 
     def on_spacebar(self):
         """Collect frames."""
+        global does_support_signals
         global tmp_path
         global INSTANCES
         self.footer.setText("Writing label to file.")
@@ -575,8 +579,8 @@ class T4Train(QtWidgets.QMainWindow):
         # Send signal to ds.py to collect #instances frames
         utils.write_cmd_message(tmp_path+"ds_cmd.txt", "SPACEBAR")
 
-        # if does_support_signals:
-        os.kill(self.ds_pid, signal.SIGINT)
+        if does_support_signals:
+            os.kill(self.ds_pid, signal.SIGINT)
 
         self.footer.setText("Collecting "+str(INSTANCES)+" frames.")
 
@@ -586,11 +590,21 @@ class T4Train(QtWidgets.QMainWindow):
         current_label=self.labels.get_current_label_raw_text()
         current_label=current_label.lower().strip().replace(" ", "_")
 
+        # print("HELLO")
+        # current_training_data_file_name='training_data_{}.npy'.format(current_label)
         current_training_data_file_name=tmp_path+'training_data_{}.npy'.format(current_label)
+        # current_training_data_file_name=os.path.join(os.getcwd(), tmp_path, 'training_data_{}.npy'.format(current_label))
+        # print(tmp_path)
+        # print(current_training_data_file_name)
 
         num_collected=0
         if os.path.exists(current_training_data_file_name):
             num_collected=np.load(current_training_data_file_name).shape[0]
+
+        print('HI')
+        print(current_training_data_file_name)
+        print(os.path.exists(current_training_data_file_name))
+        print('LOL')
 
         # DVS: this is locking ui up, fix?
         # Tried semaphore, link keypress to another routine function at init, still locked
@@ -598,12 +612,14 @@ class T4Train(QtWidgets.QMainWindow):
             if os.path.exists(current_training_data_file_name):
                 try:
                     # DVS: What is this? if a==b+1?
-                    if np.load(current_training_data_file_name). \
-                            shape[0] == num_collected + 1:
+                    if np.load(current_training_data_file_name).shape[0] == num_collected + 1:
                         break
                 except Exception as e:
                     continue
+
+        print("Im herre")
         self.labels.add_frames_current_label(INSTANCES)
+        print("Im herre2")
 
         self.footer.setText("Done Collecting Frames.")
 
@@ -632,6 +648,7 @@ class T4Train(QtWidgets.QMainWindow):
             self.labels.set_label_text()
 
     def on_save(self):
+        global does_support_signals
         global tmp_path
         """S for save."""
         self.is_predicting=False
@@ -648,8 +665,8 @@ class T4Train(QtWidgets.QMainWindow):
         # Send signal to ml to save model
         utils.write_cmd_message(tmp_path+"ml_cmd.txt", "SAVE, {}".format(curr_time))
 
-        # if does_support_signals:
-        os.kill(self.ml_pid, signal.SIGINT)
+        if does_support_signals:
+            os.kill(self.ml_pid, signal.SIGINT)
 
         # for item in os.listdir(os.path.join(os.getcwd(), tmp_path)):
         for item in os.listdir(tmp_path):
@@ -659,6 +676,7 @@ class T4Train(QtWidgets.QMainWindow):
         self.footer.setText("Saved files to saved_files/{}/".format(curr_time))
 
     def on_initial_train(self):
+        global does_support_signals
         global tmp_path
         """T for Train."""
         self.footer.setText("Training...")
@@ -669,13 +687,14 @@ class T4Train(QtWidgets.QMainWindow):
         # Send signal to ML to begin training
         utils.write_cmd_message(tmp_path+"ml_cmd.txt", "TRAIN")
 
-        # if does_support_signals:
-        os.kill(self.ml_pid, signal.SIGINT)
+        if does_support_signals:
+            os.kill(self.ml_pid, signal.SIGINT)
 
         self.is_predicting=True
         self.model_exists =True
 
     def on_retrain(self):
+        global does_support_signals
         global tmp_path
         """T for Retrain."""
         self.is_predicting=False
@@ -686,8 +705,8 @@ class T4Train(QtWidgets.QMainWindow):
         # Kill current ml process
         utils.write_cmd_message(tmp_path+"ml_cmd.txt", "BYE")
 
-        # if does_support_signals:
-        os.kill(self.ml_pid, signal.SIGINT)
+        if does_support_signals:
+            os.kill(self.ml_pid, signal.SIGINT)
 
         # Restart ml process
         self.ml_subprocess=subprocess.Popen("python ml.py", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -703,42 +722,51 @@ class T4Train(QtWidgets.QMainWindow):
 
         utils.write_cmd_message(tmp_path+"ml_cmd.txt", "TRAIN")
 
-        # if does_support_signals:
-        os.kill(self.ml_pid, signal.SIGINT)
+        if does_support_signals:
+            os.kill(self.ml_pid, signal.SIGINT)
 
         self.is_predicting=True
         self.model_exists =True
 
     def on_feature_importance(self):
+        global does_support_signals
         global tmp_path
 
         """I for feature importance."""
         self.prepare_ml_input_files()
         utils.write_cmd_message(tmp_path+"ml_cmd.txt", "FEATURE_IMPORTANCE")
-        # if does_support_signals:
-        os.kill(self.ml_pid, signal.SIGINT)
+        
+        if does_support_signals:
+            os.kill(self.ml_pid, signal.SIGINT)
+
         self.footer.setText("Feature Importances written to feature_"
                             "importances.csv")
 
     def on_ml_algo_toggle(self):
+        global does_support_signals
         global tmp_path
         """M for ML algorithm toggle."""
         global ALGOS, CURR_ALGO_INDEX
         CURR_ALGO_INDEX=utils.increment_algo_ind(CURR_ALGO_INDEX, ALGOS)
         utils.write_cmd_message(tmp_path+"ml_cmd.txt", "TOGGLE_ALGO_" + str(CURR_ALGO_INDEX))
-        # if does_support_signals:
-        os.kill(self.ml_pid, signal.SIGINT)
+        
+        if does_support_signals:
+            os.kill(self.ml_pid, signal.SIGINT)
+
         self.footer.setText("Machine Learning Algorithm Switched to %s" %
                             ALGOS[CURR_ALGO_INDEX])
 
     def on_confusion_matrix(self):
+        global does_support_signals
         global tmp_path
         """C for confusion matrix."""
         # Prepare compiled file of training data and training labels
         self.prepare_ml_input_files()
         utils.write_cmd_message(tmp_path+"ml_cmd.txt", "CONFUSION")
-        # if does_support_signals:
-        os.kill(self.ml_pid, signal.SIGINT)
+        
+        if does_support_signals:
+            os.kill(self.ml_pid, signal.SIGINT)
+        
         self.footer.setText("Confusion matrix written to file.")
 
     def on_delete_frame(self):
@@ -847,6 +875,7 @@ class T4Train(QtWidgets.QMainWindow):
             menu_line_thickness.addAction(act)
 
     def add_appmenu(self):
+        global does_support_signals
         """Set up application menu"""
         # File
         act_quit=self.menuFile.addAction('Quit')
@@ -867,8 +896,9 @@ class T4Train(QtWidgets.QMainWindow):
 
                 # Send algo change message to ml
                 utils.write_cmd_message(tmp_path+"ml_cmd.txt", "TOGGLE_ALGO_" + str(CURR_ALGO_INDEX))
-                # if does_support_signals:
-                os.kill(self.ml_pid, signal.SIGINT)
+                
+                if does_support_signals:
+                    os.kill(self.ml_pid, signal.SIGINT)
 
             self.footer.setText("Machine Learning Algorithm Switched to %s" % \
                     ALGOS[CURR_ALGO_INDEX])
@@ -1146,9 +1176,6 @@ if __name__=="__main__":
     print("Config read done.")
     #================================================================
 
-    # # Check if OS supports signals
-    # does_support_signals=utils.does_support_signals()
-
     global SETUP_TIME, window, FPS_COUNTER_RATE
     global font_family, fontsize_normal, fontsize_maximized
 
@@ -1168,12 +1195,11 @@ if __name__=="__main__":
     if sys.platform.startswith('win'):
         tmp_path=os.path.join("tmp", "")
 
-    # # Check if OS supports signals
-    # if does_support_signals:
-    #     signal.signal(signal.SIGINT, receive_signal)
-
-
-    # sys.exit()
+    # Check if OS supports signals
+    global does_support_signals
+    does_support_signals=utils.does_support_signals()
+    if does_support_signals:
+        signal.signal(signal.SIGINT, receive_signal)
 
     app   =QtWidgets.QApplication(sys.argv)    
     window=T4Train(ds_filename)

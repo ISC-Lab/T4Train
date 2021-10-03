@@ -19,6 +19,7 @@ import numpy as np
 tmp_path="tmp/"
 if sys.platform.startswith('win'):
     tmp_path=os.path.join("tmp", "")
+# tmp_path=""
 
 def does_support_signals():
     return not platform=="win32"
@@ -31,6 +32,17 @@ def delete_files_ending_in(file_types):
             os.remove(f)
     else:
         os.mkdir(tmp_path)
+
+    # dir = os.getcwd()
+    # for item in os.listdir(dir):
+    #     if item == "requirements.txt":
+    #         continue
+
+    #     for file_type in file_types:
+
+    #         if item.endswith(file_type):
+    #             os.remove(os.path.join(dir, item))
+    #             break
 
 def write_label(label, filename):
     """Sanitizes and writes label to filename."""
