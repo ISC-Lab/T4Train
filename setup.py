@@ -13,7 +13,7 @@ from sys import platform
 
 # upgrading pip
 os.system("python -m pip install --upgrade pip")
-os.system("pip install -r requirements.txt")
+os.system("pip install --user -r requirements.txt")
 
 os.system("echo ~")
 os.system("echo ~")
@@ -24,8 +24,8 @@ os.system("echo = = = = = = = = = = = = = = = = = = = = = = =")
 os.system("echo Installing pyaudio...")
 if platform == "win32":
     os.system("echo You are using Windows, WHY?? WHHHHYYYYYY????")
-    os.system("pip install readme_assets\PyAudio-0.2.11-cp38-cp38-win_amd64.whl")
+    os.system("pip install --user readme_assets\PyAudio-0.2.11-cp38-cp38-win_amd64.whl")
 else:
     os.system("echo You are using Linux, GOOD BOIII!!!")
-    os.system("pip install pyaudio")
+    os.system("pip install --user pyaudio")
 os.system("echo = = = = = = = = = = = = = = = = = = = = = = =")
