@@ -112,11 +112,11 @@ void collect_sample()
     // Loop through CAPTURE_SIZE samples and frequency sweep steps
     while(i<CAPTURE_SIZE)
     {
-        // Logarithmic, high to low, dense points at low  freq
-        double f=pow(10, (log10(f_end-f_start)*((i*1.0)/(CAPTURE_SIZE-1))))+f_start;
+        // Logarithmic, loe to high, dense points at low  freq
+        // double f=pow(10, (log10(f_end-f_start)*((i*1.0)/(CAPTURE_SIZE-1))))+f_start;
 
-        // Logarithmic, high to low, dense points at high freq
-        // double f=pow(10, (log10(f_end-f_start)*(((CAPTURE_SIZE-i-1)*1.0)/(CAPTURE_SIZE-1))))+f_start;
+        // Logarithmic, high to low, dense points at low freq
+        double f=pow(10, (log10(f_end-f_start)*(((CAPTURE_SIZE-i-1)*1.0)/(CAPTURE_SIZE-1))))+f_start;
         
         // Linear,      high to low
         // double f=(f_end-f_start)*(((CAPTURE_SIZE-i-1)*1.0)/(CAPTURE_SIZE-1))+f_start;
