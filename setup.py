@@ -12,7 +12,7 @@ import os
 from sys import platform
 
 # upgrading pip
-os.system("python -m pip install --upgrade pip")
+os.system("python -m pip install --user --upgrade pip")
 os.system("pip install --user -r requirements.txt")
 
 os.system("echo ~")

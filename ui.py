@@ -601,11 +601,6 @@ class T4Train(QtWidgets.QMainWindow):
         if os.path.exists(current_training_data_file_name):
             num_collected=np.load(current_training_data_file_name).shape[0]
 
-        print('HI')
-        print(current_training_data_file_name)
-        print(os.path.exists(current_training_data_file_name))
-        print('LOL')
-
         # DVS: this is locking ui up, fix?
         # Tried semaphore, link keypress to another routine function at init, still locked
         while True:
@@ -617,10 +612,7 @@ class T4Train(QtWidgets.QMainWindow):
                 except Exception as e:
                     continue
 
-        print("Im herre")
         self.labels.add_frames_current_label(INSTANCES)
-        print("Im herre2")
-
         self.footer.setText("Done Collecting Frames.")
 
     def on_load(self):
@@ -771,6 +763,7 @@ class T4Train(QtWidgets.QMainWindow):
 
     def on_delete_frame(self):
         global tmp_path
+        
         """Backspace for delete frame."""
         # Get current training data file name
         current_label=self.labels.get_current_label_raw_text().lower(). \

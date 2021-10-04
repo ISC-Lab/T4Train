@@ -202,7 +202,7 @@ def read_message():
     except Exception as e:
         return
 
-    print("ml cmd:", cmd)
+    # print("ml cmd:", cmd)
 
     try:
         with open(tmp_path+"feat.txt", "r") as f:
@@ -275,10 +275,9 @@ def ml_train():
     
     X_train=np.array(X_train)[:, :, 0]
     Y_train=np.array(Y_train)
-
-    print("HI")
-    print(X_train.shape)
-    print(Y_train.shape)
+    
+    # print(X_train.shape)
+    # print(Y_train.shape)
 
     le=preprocessing.LabelEncoder()
     le.fit(Y_train)
