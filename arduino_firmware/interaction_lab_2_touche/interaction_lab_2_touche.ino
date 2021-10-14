@@ -127,6 +127,8 @@ void collect_sample()
         delayMicroseconds(50);
         
         input[i]=analogRead(PIN_IN);
+      
+        if(i<15) input[i]=2500;
         
         i++;
     }
