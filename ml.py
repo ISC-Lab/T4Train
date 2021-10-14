@@ -218,7 +218,7 @@ def read_message():
         model          =None
     elif cmd=='FEATURE_IMPORTANCE':
         feature_importances()
-    elif cmd=='TOGGLE_ALGO':
+    elif cmd.find('TOGGLE_ALGO')>-1:
         curr_algo_index=int(cmd[-1])
         algo           =algos[curr_algo_index]
         model          =None
@@ -283,7 +283,8 @@ def ml_train():
     le.fit(Y_train)
     Y_train=le.transform(Y_train)
     
-    # Initializes machine learning classifier/regressor  
+    # Initializes machine learning classifier/regressor
+    print("ML", algos[curr_algo_index], mode)
     model=init_machine_learning(algos[curr_algo_index], mode)
     # Trains the model
     model.fit(X_train, Y_train) 

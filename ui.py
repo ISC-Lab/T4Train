@@ -699,6 +699,7 @@ class T4Train(QtWidgets.QMainWindow):
 
         if does_support_signals:
             os.kill(self.ml_pid, signal.SIGINT)
+            os.remove(tmp_path+"ml_pidnum.txt")
 
         # Restart ml process
         self.ml_subprocess=subprocess.Popen("python ml.py", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
