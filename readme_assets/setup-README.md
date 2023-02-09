@@ -15,10 +15,12 @@
 
 ## Requirements
 
-T4Train requires Python 3. [Anaconda](https://www.anaconda.com/distribution/)is
+T4Train requires Python 3. [Anaconda](https://www.anaconda.com/distribution/) is
 strongly recommended as your Python environment for environment and package
 management to make setup easier. It includes several of the packages needed for
-T4Train. This repo has confirmed compatibility with the Anaconda3-2022.10 (Python 3.9) release.
+T4Train. 
+
+This repo has confirmed compatibility with the Anaconda3-2022.10 (Python 3.9) release.
 
 If you do not install Anaconda for Python, T4Train may still work, but package
 installation could be more difficult.
@@ -147,7 +149,7 @@ All of the T4Train dependencies should now be installed.
 #### Windows Users
 
 Run  `python --version` in terminal to find the Python version and bit number
-(e.g. 3.7.3 and 64bit (AMD64)).
+(e.g. 3.9.16 and 64bit (AMD64)).
 
 Find the corresponding `.whl` file:
 [lfd.uci.edu/~gohlke/pythonlibs/#pyaudio](lfd.uci.edu/~gohlke/pythonlibs/#pyaudio).
