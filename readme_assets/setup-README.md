@@ -18,7 +18,7 @@
 T4Train requires Python 3. [Anaconda](https://www.anaconda.com/distribution/)is
 strongly recommended as your Python environment for environment and package
 management to make setup easier. It includes several of the packages needed for
-T4Train.
+T4Train. This repo has confirmed compatibility with the Anaconda3-2022.10 (Python 3.9) release.
 
 If you do not install Anaconda for Python, T4Train may still work, but package
 installation could be more difficult.

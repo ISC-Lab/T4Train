@@ -24,7 +24,7 @@ os.system("echo = = = = = = = = = = = = = = = = = = = = = = =")
 os.system("echo Installing pyaudio...")
 if platform == "win32":
     os.system("echo You are using Windows, WHY?? WHHHHYYYYYY????")
-    os.system("pip install --user readme_assets\PyAudio-0.2.11-cp38-cp38-win_amd64.whl")
+    os.system("pip install --user readme_assets\PyAudio-0.2.11-cp39-cp39-win_amd64.whl")
 else:
     os.system("echo You are using Linux, GOOD BOIII!!!")
     os.system("pip install --user pyaudio")
