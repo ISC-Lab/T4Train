@@ -518,7 +518,7 @@ class T4Train(QtWidgets.QMainWindow):
                 pass
         try:
             global tmp_path
-            self.curr_frame=np.load(tmp_path+'tmp_frame.npy').astype(np.float)
+            self.curr_frame=np.load(tmp_path+'tmp_frame.npy').astype(np.float32)
             npy_data=self.curr_frame[:, :-2]
         except Exception as e:
             return
