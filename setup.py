@@ -13,15 +13,21 @@ from sys import platform
 
 
 if platform == 'darwin':
-    conda_version = os.popen("conda --version").read().split(' ')[1].split(".")[0]
-    if conda_version == "23":
-        print('Good job, you have conda correctly installed!\n')
+    conda_version = os.popen("conda --version").read().split(' ')[1]
+    if conda_version.startswith("23"):
+        print('Good job, you have conda correctly installed! ('+conda_version[:-1]+') \n')
     else:
         print("Install conda per the instructions.")
         exit()
-    brew_version = os.popen("brew --version").read().split(' ')[1].split('\n')[0].split('.')
-    if brew_version[0]=="3" and brew_version[1]=="6":
-        print("Good job, you have brew correctly installed!\n") 
+    python_version = os.popen("python --version").read().split(' ')[1]
+    if python_version.startswith("3.9"):
+        print('Good job, you have the correct python version! ('+python_version[:-1]+') \n')
+    else:
+        print("Install python per the instructions.")
+        exit()
+    brew_version = os.popen("brew --version").read().split(' ')[1].split('\n')[0]
+    if brew_version.startswith("3.6"):
+        print('Good job, you have brew correctly installed! ('+brew_version[:-1]+') \n')
 
         print("Installing portaudio \n")
         os.system("brew install portaudio")
@@ -37,7 +43,19 @@ if platform == 'darwin':
     os.system("pip install --upgrade --force-reinstall pyaudio")
 
 if platform.startswith('win'):
-    os.system("echo You are using Windows, WHY?? WHHHHYYYYYY????")
+    conda_version = os.popen("conda --version").read().split(' ')[1]
+    if conda_version.startswith("23"):
+        print('Good job, you have conda correctly installed! ('+conda_version[:-1]+') \n')
+    else:
+        print("Install conda per the instructions.")
+        exit()
+    python_version = os.popen("python --version").read().split(' ')[1]
+    if python_version.startswith("3.9"):
+        print('Good job, you have the correct python version! ('+python_version[:-1]+') \n')
+    else:
+        print("Install python per the instructions.")
+        exit()
+    
     print("Upgrading pip\n")
     os.system("pip install --upgrade pip")
     print("Instaling requirements")
@@ -46,12 +64,17 @@ if platform.startswith('win'):
     os.system("pip install --user readme_assets\PyAudio-0.2.11-cp39-cp39-win_amd64.whl")
 
 if platform.startswith('linux'):
-    os.system("echo You are using Linux, GOOD BOIII!!!")
-    conda_version = os.popen("conda --version").read().split(' ')[1].split(".")[0]
-    if conda_version == "23":
-        print('Good job, you have conda correctly installed!\n')
+    conda_version = os.popen("conda --version").read().split(' ')[1]
+    if conda_version.startswith("23"):
+        print('Good job, you have conda correctly installed! ('+conda_version[:-1]+') \n')
     else:
         print("Install conda per the instructions.")
+        exit()
+    python_version = os.popen("python --version").read().split(' ')[1]
+    if python_version.startswith("3.9"):
+        print('Good job, you have the correct python version! ('+python_version[:-1]+') \n')
+    else:
+        print("Install python per the instructions.")
         exit()
 
     print("Upgrading pip\n")
