@@ -25,6 +25,8 @@ This repo has confirmed compatibility with the Anaconda3-2022.10 (Python 3.9) re
 If you do not install Anaconda for Python, T4Train may still work, but package
 installation could be more difficult.
 
+Mac users will need [Homebrew](https://brew.sh/) installed to install [portaudio](https://formulae.brew.sh/formula/portaudio), which is required to pip install pyaudio.
+
 #### Windows Users
 
 Once installed, verify Anaconda is your Python interpreter by opening Anaconda
