@@ -2,30 +2,32 @@
 
 ## Contents
 
-- [Requirements](#Requirements)
-	- [Windows](#Windows_Req)
-	- [MacOS & Linux](#Mac_Linux_Req)
-- [Setup](#Setup)
-	- [Setting up a virtual environment](#Virtual_Env)
-		- [Windows](#Windows_Env)
-		- [MacOS & Linux](#Mac_Linux_Env)
-	- [Installing dependencies](#Dependencies)
-- [Troubleshooting](#Troubleshooting)
+- [Requirements](#requirements)
+	- [Windows](#windows-users)
+	- [MacOS & Linux](#maclinux-users)
+- [Setup](#setup)
+	- [Setting up a virtual environment](#setting-up-a-virtual-environment)
+	- [Installing dependencies](#dependencies)
+- [Troubleshooting](#troubleshooting)
+- [Appendix for pure venv-based install](#appendix-for-pure-venv-based-install)
 
 
 ## Requirements
 
-T4Train requires Python 3. [Anaconda](https://www.anaconda.com/distribution/) is
-strongly recommended as your Python environment for environment and package
-management to make setup easier. It includes several of the packages needed for
-T4Train. 
+T4Train requires Python 3.8 or 3.9.
+[Anaconda](https://www.anaconda.com/distribution/) or
+[Miniconda](https://docs.conda.io/en/latest/miniconda.html) is strongly
+recommended as your Python environment for environment and package management to
+make setup easier. It includes several of the packages needed for T4Train. 
 
 This repo has confirmed compatibility with the Anaconda3-2022.10 (Python 3.9) release.
 
-If you do not install Anaconda for Python, T4Train may still work, but package
+If you do not install conda for Python, T4Train may still work, but package
 installation could be more difficult.
 
-Mac users will need [Homebrew](https://brew.sh/) installed to install [portaudio](https://formulae.brew.sh/formula/portaudio), which is required to pip install pyaudio. Apple silicon Macs are not officially supported (yet!)
+Mac users will need [Homebrew](https://brew.sh/) installed to install
+[portaudio](https://formulae.brew.sh/formula/portaudio), which is required to
+pip install pyaudio. Apple silicon Macs are not officially supported (yet!)
 
 #### Windows Users
 
@@ -49,34 +51,27 @@ It should respond with something like:
     /home/[user]/anaconda3/bin/python
 
 After you've verified that Anaconda is being used as your python environment,
-set up your [virtual environment](#Virtual_Env).
+set up your [virtual environment](#setting-up-a-virtual-environment).
 
 ## Setup
 
 ### Setting Up a Virtual Environment
 
-We strongly recommend setting up a virtual environment to avoid clashing with
-your current environment and making setup easier. The following instructions are
-for Anaconda users, so if you are not using Anaconda, try making a virtual
-environment in [Windows](#Windows_Env) or [MacOS & Linux](#Mac_Linux_Env).
+We strongly recommend setting up a conda virtual environment to avoid clashing
+with your current environment and making setup easier. If you insist on using
+Python's vanilla venv, try following
+[appendix for pure venv-based install](#appendix-for-pure-venv-based-install).
 
 If using Anaconda, update your environment before installing dependencies with:
 
-    $ conda update conda
-    $ conda update --all
-
-Check your version of Python by typing the following in terminal for MacOS &
-Linux and Anaconda Prompt (in the Windows Start Menu) for Windows:
-
-	$ python --version
+    $ conda update -n base conda
+    $ conda update -n base --all
 
 Navigate to the T4Train directory in Terminal or Anaconda Prompt and create an
-environment (called env) and activate it:
+environment with a name such as "t4train-env" and activate it:
 
-	$ conda create -n env python=x.x anaconda
-	$ conda activate env
-
-Replace x.x with your Python version number.
+	$ conda create -n <name-of-the-env> python=3.9
+	$ conda activate <name-of-the-env>
 
 Press y to proceed.
 
@@ -86,59 +81,14 @@ To leave the environment after you no longer need it:
 
 After you have created your virtual environment, install the [dependencies](#Dependencies).
 
-#### Windows Users
-
-Without Anaconda, you can get up a virtual environment in the T4Train directory
-in Command Prompt or Powershell like this:
-
-    $ py -m pip install --upgrade pip
-    $ py -m pip install --user virtualenv
-    $ py -m venv env
-
-To activate the virtual environment:
-
-    $ .\env\Scripts\activate
-
-To confirm you're in the virtual environment, check the location of your Python
-interpreter.
-
-    $ where python
-    .../env/bin/python.exe
-
-To leave the environment after you no longer need it:
-
-	$ deactivate
-
-#### Mac/Linux Users
-
-Without Anaconda, you can get up a virtual environment in the T4Train directory
-in terminal like this:
-
-    $ python3 -m pip install --user --upgrade pip
-    $ python3 -m pip install --user virtualenv
-    $ python3 -m venv env
-
-To activate the virtual environment:
-
-    $ source env/bin/activate
-
-To confirm you're in the virtual environment, check the location of your Python interpreter.
-
-    $ which python
-    .../env/bin/python
-
-To leave the environment after you no longer need it:
-
-	$ deactivate
-
 ## Dependencies
 
-All of the dependencies are listed in `requirements.txt`. To reduce the likelihood
-of environment errors, install the dependencies inside a virtual environment
-with the following steps.
+All of the dependencies are listed in `requirements.txt`. To reduce the
+likelihood of environment errors, install the dependencies inside a virtual
+environment with the following steps.
 
-Navigate to the T4Train directory and activate the virtual environment in your
-terminal. Run the following commands in terminal:
+Navigate to the T4Train directory **and activate the virtual environment in your
+terminal**. Run the following commands in terminal:
 
 	$ python setup.py
 
@@ -150,33 +100,72 @@ All of the T4Train dependencies should now be installed.
 
 #### Windows Users
 
-Run  `python --version` in terminal to find the Python version and bit number
-(e.g. 3.9.16 and 64bit (AMD64)).
+`cd` to the T4Train root folder run the following command **inside a conda
+ or vanilla Python virtual environment**:
 
-Find the corresponding `.whl` file:
-[lfd.uci.edu/~gohlke/pythonlibs/#pyaudio](lfd.uci.edu/~gohlke/pythonlibs/#pyaudio).
-
-The number after `cp` is the version number and the number after `win` is the bit information.
-
-`cd` to the folder the file is saved in and run the following command with the name of your `.whl` file:
-
-    $ pip install <file-name>
+    $ pip install --force-reinstall readme_assets\PyAudio-0.2.11-cp39-cp39-win_amd64.whl 
 
 #### Linux Users
 
-Run the follow command in terminal:
+If you are using Ubuntu or other Debian-based distro, run the follow command in
+terminal:
 
-    $ sudo apt-get install libasound-dev
+    $ sudo apt-get install libportaudio2 portaudio19-dev
 
-Download the portaudio archive from:
-[portaudio.com/download.html](portaudio.com/download.html)
-    
-`cd` to the directory with the tarball, unzip it, and configure:  
+For other Linux distros, search for portaudio in your distro's package
+repository and install the corresponding packages.
 
-    $ tar -zxvf <portaudio file-name>
-    $ ./configure && make
+Then **activate your virtual environment** and install Pyaudio:
 
-Then install Pyaudio:
+    $ pip install pyaudio
 
-    $ sudo make install
-    $ sudo pip install pyaudio
+## Appendix for pure venv-based install
+
+**Use pure venv-based install is only likely to work when you are using Python
+3.9.** Even if your system is bundled with Python 3.9, it is still recommended
+to use conda to create a separate environment with an independent Python
+interpreter other than your system's Python interpreter.
+
+After creating an venv using the methods below, go back to the
+[Dependencies](#dependencies) section to install the dependencies.
+
+### Windows Users
+
+Without Anaconda, you can get up a virtual environment in the T4Train directory
+in Command Prompt or Powershell like this:
+
+    $ python -m venv <name-of-the-env>
+
+To activate the virtual environment:
+
+    $ .\<name-of-the-env>\Scripts\activate
+
+To confirm you're in the virtual environment, check the location of your Python
+interpreter.
+
+    $ where python
+    ...\<name-of-the-env>\bin\python.exe
+
+To leave the environment after you no longer need it:
+
+	$ deactivate
+
+### Mac/Linux Users
+
+Without Anaconda, you can get up a virtual environment in the T4Train directory
+in terminal like this:
+
+    $ python3 -m venv <name-of-the-env>
+
+To activate the virtual environment:
+
+    $ source <name-of-the-env>/bin/activate
+
+To confirm you're in the virtual environment, check the location of your Python interpreter.
+
+    $ which python
+    .../<name-of-the-env>/bin/python
+
+To leave the environment after you no longer need it:
+
+	$ deactivate
