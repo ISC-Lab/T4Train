@@ -115,6 +115,15 @@ terminal:
 For other Linux distros, search for portaudio in your distro's package
 repository and install the corresponding packages.
 
+#### Apple Silicon (M1/M2) Users
+
+Assuming you have brew installed: 
+
+    $ brew install portaudio
+    $ python -m pip install --force-reinstall --no-cache-dir  --global-option='build_ext' --global-option='-I/opt/homebrew/Cellar/portaudio/19.7.0/include' --global-option='-L/opt/homebrew/Cellar/portaudio/19.7.0/lib' pyaudio
+    
+See this [StackOverflow Question](https://stackoverflow.com/questions/68251169/unable-to-install-pyaudio-on-m1-mac-portaudio-already-installed) for more details. 
+
 Then **activate your virtual environment** and install Pyaudio:
 
     $ pip install pyaudio
