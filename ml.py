@@ -257,9 +257,9 @@ def ml_train():
         print(e)
         return None, None
 
-    if "Camera" not in ds_handler:
+    #if "Camera" not in ds_handler:
         # Cut out channel indices stored in last two cols of all rows
-        training_data=training_data[:, :, :, :-2]
+        #training_data=training_data[:, :, :, :-2]
 
     training_labels=np.load(tmp_path+'training_labels.npy')
     X_train=[]
