@@ -17,24 +17,24 @@ We expect the conference WiFi to be slow (and we have a limited number of loaner
 
 2) Clone the T4Train repo and follow T4Train Setup directions to install required packages.
 
-T4Train GitHub Repo:
+>>T4Train GitHub Repo:
 
-https://github.com/ISC-Lab/T4Train
+>>https://github.com/ISC-Lab/T4Train
 
-[T4Train Setup Information](https://github.com/ISC-Lab/T4Train/blob/master/readme_assets/setup-README.md)
+>>[T4Train Setup Information](https://github.com/ISC-Lab/T4Train/blob/master/readme_assets/setup-README.md)
 
-If you run into any issues running "setup.py" after installing the above release of Anaconda, feel free to reach out. For Mac M1/M2/M3 users, there is a separate set of directions.
+>>If you run into any issues running "setup.py" after installing the above release of Anaconda, feel free to reach out. For Mac M1/M2/M3 users, there is a separate set of directions.
 
 3) Install Arduino IDE, Nano 33 Sense Board, and Nano 33 Sense Libraries
 
-Arduino Links:
+>>Arduino Links:
 
-[arduino-ide_2.3.2_Windows_64bit](https://downloads.arduino.cc/arduino-ide/arduino-ide_2.3.2_Windows_64bit.exe)
+>>[arduino-ide_2.3.2_Windows_64bit](https://downloads.arduino.cc/arduino-ide/arduino-ide_2.3.2_Windows_64bit.exe)
 
-[arduino-ide_2.3.2_Linux_64bit](https://downloads.arduino.cc/arduino-ide/arduino-ide_2.3.2_Linux_64bit.AppImage)
+>>[arduino-ide_2.3.2_Linux_64bit](https://downloads.arduino.cc/arduino-ide/arduino-ide_2.3.2_Linux_64bit.AppImage)
 
-[arduino-ide_2.3.2_macOS_64bit (Mac Intel)](https://downloads.arduino.cc/arduino-ide/arduino-ide_2.3.2_macOS_64bit.dmg)
+>>[arduino-ide_2.3.2_macOS_64bit (Mac Intel)](https://downloads.arduino.cc/arduino-ide/arduino-ide_2.3.2_macOS_64bit.dmg)
 
-[arduino-ide_2.3.2_macOS_arm64 (Mac M1/M2/M3)](https://downloads.arduino.cc/arduino-ide/arduino-ide_2.3.2_macOS_arm64.dmg)
+>>[arduino-ide_2.3.2_macOS_arm64 (Mac M1/M2/M3)](https://downloads.arduino.cc/arduino-ide/arduino-ide_2.3.2_macOS_arm64.dmg)
 
-After installing Arduino IDE, please go into the Boards Manager (`Tools->Board->Boards Manager`) and install `Arduino Mbed OS Nano Boards`. Then, please go into `Tools->Manage Libraries...` and install `Arduino_ScienceJournal` which should install all of the libraries for the Nano 33 Sense.
+>>After installing Arduino IDE, please go into the Boards Manager (`Tools->Board->Boards Manager`) and install `Arduino Mbed OS Nano Boards`. Then, please go into `Tools->Manage Libraries...` and install `Arduino_ScienceJournal` which should install all of the libraries for the Nano 33 Sense.
