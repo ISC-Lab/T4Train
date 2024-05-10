@@ -2,6 +2,9 @@
 
 ---
 
+## CHI 2024 Course Setup Instructions
+Please find the pre-course setup instructions [here](https://github.com/ISC-Lab/T4Train/blob/master/readme_assets/CHI2024-course.md). 
+
 ## Contents
 
 - [Overview](#Overview)
@@ -40,6 +43,7 @@ streams for interactive applications.
 - **_Open source_**: _Framework fully extendable and customizable_
 
 We note that this is _research-grade_ code, and with that comes _research-grade_ bugs.
+
 ## Different Data Handlers in T4Trian
 
 We currently support 7 data handlers: built-in laptop camera, Teensy, Arduino,
