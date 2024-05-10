@@ -35,10 +35,11 @@
 cross-platform GUI that collects, visualizes, and classifies real-time data
 streams for interactive applications.
 - **_Easy-to-use_**: _ML-driven interactive applications prototyped and deployed rapidly_
-- **_Cross-platform_**: _Mac, Linux, and Windows supported_
+- **_Cross-platform_**: _Mac, Linux, and Windows are supported_
 - **_Real-time visualizations_**: _Raw signals and featurized data plotted in real time_
 - **_Open source_**: _Framework fully extendable and customizable_
 
+We note that this is _research-grade_ code, and with that comes _research-grade_ bugs.
 ## Different Data Handlers in T4Trian
 
 We currently support 7 data handlers: built-in laptop camera, Teensy, Arduino,
@@ -81,8 +82,7 @@ screenshot of the interface with a configuration featuring the labels "wave,"
 - **Top left corner box:** a list of training labels and the number of data frames
 collected for each label. The label highlighted in red indicates the "current"
 label, for which recorded data frames are annotated. Users can arbitrarily switch
-between labels using the keyboard's arrow keys to collect new frames using spacebar
-or delete collected frames using backspace as described in a later section. We make
+between labels using the keyboard's arrow keys to collect new frames using the spacebar or delete collected frames using backspace as described in a later section. We make
 these design choices to improve system status visibility and offer better user
 control in collecting data per label.
 
