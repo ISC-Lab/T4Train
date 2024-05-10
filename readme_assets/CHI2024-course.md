@@ -2,17 +2,18 @@ We expect the conference WiFi to be slow (and we have a limited number of loaner
 
 
 1) Install Anaconda as your python distribution.
-Anaconda Links:
 
-[Anaconda3-2022.10-Windows-x86_64 (Windows)](https://repo.anaconda.com/archive/Anaconda3-2022.10-Windows-x86_64.exe)
+>>Anaconda Links:
 
-[Anaconda3-2022.10-Linux-x86_64 (Linux x86-64)](https://repo.anaconda.com/archive/Anaconda3-2022.10-Linux-x86_64.sh)
+>>[Anaconda3-2022.10-Windows-x86_64 (Windows)](https://repo.anaconda.com/archive/Anaconda3-2022.10-Windows-x86_64.exe)
 
-[Anaconda3-2022.10-MacOSX-x86_64 (Mac Intel)](https://repo.anaconda.com/archive/Anaconda3-2022.10-MacOSX-x86_64.pkg)
+>>[Anaconda3-2022.10-Linux-x86_64 (Linux x86-64)](https://repo.anaconda.com/archive/Anaconda3-2022.10-Linux-x86_64.sh)
 
-[Anaconda3-2022.10-MacOSX-arm64 (Mac M1/M2/M3)](https://repo.anaconda.com/archive/Anaconda3-2022.10-MacOSX-arm64.pkg)
+>>[Anaconda3-2022.10-MacOSX-x86_64 (Mac Intel)](https://repo.anaconda.com/archive/Anaconda3-2022.10-MacOSX-x86_64.pkg)
 
-While T4Train can run on other Python 3.9 distributions, our setup.py file assumes the above Anaconda release. More information can be found in the T4Train Setup information below.
+>>[Anaconda3-2022.10-MacOSX-arm64 (Mac M1/M2/M3)](https://repo.anaconda.com/archive/Anaconda3-2022.10-MacOSX-arm64.pkg)
+
+>>While T4Train can run on other Python 3.9 distributions, our setup.py file assumes the above Anaconda release. More information can be found in the T4Train Setup information below.
 
 2) Clone the T4Train repo and follow T4Train Setup directions to install required packages.
 
