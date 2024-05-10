@@ -1,0 +1,14 @@
+configparser
+numpy
+opencv-python
+tensorflow
+scipy
+pyserial
+matplotlib
+scikit-learn
+psutil
+Pillow
+timeloop
+pyqt5
+pyqtwebengine
+pyqtgraph==0.11.0

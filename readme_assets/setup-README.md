@@ -14,20 +14,18 @@
 
 ## Requirements
 
-T4Train requires Python 3.8 or 3.9.
-[Anaconda](https://www.anaconda.com/distribution/) or
-[Miniconda](https://docs.conda.io/en/latest/miniconda.html) is strongly
+T4Train requires Python 3.9. [Anaconda](https://www.anaconda.com/distribution/) is strongly
 recommended as your Python environment for environment and package management to
 make setup easier. It includes several of the packages needed for T4Train. 
 
-This repo has confirmed compatibility with the Anaconda3-2022.10 (Python 3.9) release.
+This repo has confirmed compatibility with the [Anaconda3-2022.10 (Python 3.9)](https://repo.anaconda.com/archive/) release. The `setup.py` included in this repo assumes this Anaconda release.
 
 If you do not install conda for Python, T4Train may still work, but package
 installation could be more difficult.
 
 Mac users will need [Homebrew](https://brew.sh/) installed to install
 [portaudio](https://formulae.brew.sh/formula/portaudio), which is required to
-pip install pyaudio. Apple silicon Macs are not officially supported (yet!)
+pip install pyaudio. Apple-silicon Macs (e.g., M1) have preliminary support, but may not be compatible with `setup.py` due to package version issues. We recommend instead installing portaudio first (`brew install portaudio`) followed by `pip install -r requirements-m1.txt`. We hope to build full support in the next version of T4Train that uses Qt6. 
 
 #### Windows Users
 
@@ -117,7 +115,7 @@ repository and install the corresponding packages.
 
 #### Apple Silicon (M1/M2) Users
 
-Assuming you have brew installed: 
+If the default pyaudio version foudn by pip fails to install, we suggest the following assuming you have brew installed: 
 
     $ brew install portaudio
     $ python -m pip install --force-reinstall --no-cache-dir  --global-option='build_ext' --global-option='-I/opt/homebrew/Cellar/portaudio/19.7.0/include' --global-option='-L/opt/homebrew/Cellar/portaudio/19.7.0/lib' pyaudio

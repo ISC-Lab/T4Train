@@ -83,22 +83,4 @@ if platform.startswith('linux'):
     os.system("pip install --upgrade -r requirements.txt")
     print("Installing pyaudio separately for Linux")
     os.system("pip install --upgrade --force-reinstall pyaudio")
-    
-# upgrading pip
-# os.system("python -m pip install --user --upgrade pip")
-# os.system("pip install --user -r requirements.txt")
 
-# os.system("echo ~")
-# os.system("echo ~")
-# os.system("echo ~")
-# os.system("echo ~")
-# os.system("echo ~")
-# os.system("echo = = = = = = = = = = = = = = = = = = = = = = =")
-# os.system("echo Installing pyaudio...")
-# if platform == "win32":
-#     os.system("echo You are using Windows, WHY?? WHHHHYYYYYY????")
-#     os.system("pip install --user readme_assets\PyAudio-0.2.11-cp39-cp39-win_amd64.whl")
-# else:
-#     os.system("echo You are using Linux, GOOD BOIII!!!")
-#     os.system("pip install --user pyaudio")
-# os.system("echo = = = = = = = = = = = = = = = = = = = = = = =")
